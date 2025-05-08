@@ -58,7 +58,7 @@ const AppSideBar = () => {
   return (
     <Sidebar collapsible="icon" variant="floating">
       <SidebarHeader>
-        <Image src={Logo} height={200} width={200} alt="Ask Repo Logo" />
+        <Image src={Logo} alt="Ask Repo Logo" />
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
