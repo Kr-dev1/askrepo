@@ -19,9 +19,11 @@ import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import useProject from "@/hooks/use-projects";
 
 export default function SignupForm() {
   const router = useRouter();
+  const { projectId } = useProject();
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -44,7 +46,7 @@ export default function SignupForm() {
       form.reset();
       toast.success("Logged In successfully");
       setTimeout(() => {
-        router.push("/dashboard");
+        router.push(projectId === null ? "create" : "/dashboard");
       }, 1000);
     } catch (error) {
       console.error("Sign in error:", error);
@@ -123,7 +125,7 @@ export default function SignupForm() {
           </div>
           <div className="mt-4 h-[1px] w-full bg-gradient-to-r from-transparent to-transparent via-neutral-700" />
         </form>
-        <GoogleButton />
+        <GoogleButton projectId={projectId} />
       </Form>
     </div>
   );

@@ -19,6 +19,7 @@ import { z } from "zod";
 import { useSubmitForm } from "@/hooks/submitForm";
 import GoogleButton from "./googleButton";
 import Link from "next/link";
+import useProject from "@/hooks/use-projects";
 // import { signIn } from "@/app/api/auth/[...nextauth]/options";
 
 export default function SignupForm() {
@@ -30,7 +31,7 @@ export default function SignupForm() {
       password: "",
     },
   });
-
+  const { projectId } = useProject();
   const { isPending, submitForm } = useSubmitForm();
 
   const onSubmit = (data: z.infer<typeof signUpSchema>) => {
@@ -38,7 +39,6 @@ export default function SignupForm() {
       method: "POST",
       url: "auth/signup",
       data,
-      redirectUrl: "/dashboard",
     });
   };
 
@@ -134,7 +134,7 @@ export default function SignupForm() {
           </div>
           <div className="mt-4 h-[1px] w-full bg-gradient-to-r from-transparent to-transparent via-neutral-700" />
         </form>
-        <GoogleButton />
+        <GoogleButton projectId={projectId} />
       </Form>
     </div>
   );

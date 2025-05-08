@@ -2,11 +2,15 @@ import { IconBrandGoogle } from "@tabler/icons-react";
 import React from "react";
 import { signIn } from "next-auth/react";
 
-const GoogleButton = () => {
+interface GoogleButtonProps {
+  projectId: string | null;
+}
+
+const GoogleButton: React.FC<GoogleButtonProps> = ({ projectId }) => {
   const handleGoogleSignIn = async () => {
     try {
       await signIn("google", {
-        callbackUrl: "/dashboard",
+        callbackUrl: projectId === null ? "/create" : "/dashboard",
       });
     } catch (error) {
       console.error("Error signing in with Google:", error);

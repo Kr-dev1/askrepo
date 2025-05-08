@@ -1,5 +1,5 @@
-// import { PrismaClient } from "@prisma/client";
-
-// declare global {
-//   var prisma: PrismaClient | undefined;
-// }
+import { PrismaClient } from "@prisma/client";
+declare module "@prisma/nextjs-monorepo-workaround-plugin";
+declare global {
+  var prisma: PrismaClient | undefined;
+}
