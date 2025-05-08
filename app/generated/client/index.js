@@ -178,6 +178,10 @@ const config = {
         "fromEnvVar": null,
         "value": "windows",
         "native": true
+      },
+      {
+        "fromEnvVar": null,
+        "value": "rhel-openssl-3.0.x"
       }
     ],
     "previewFeatures": [],
@@ -195,16 +199,17 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "postgresql://neondb_owner:npg_Md0tJXlaDC3B@ep-rapid-waterfall-a1bp3a0x-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require"
+        "value": null
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../app/generated/client\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id            String          @id @default(cuid())\n  name          String          @unique\n  email         String          @unique\n  password      String?\n  createdAt     DateTime        @default(now())\n  updatedAt     DateTime        @updatedAt\n  UserToProject UserToProject[]\n}\n\nmodel Project {\n  id            String          @id @default(cuid())\n  createdAt     DateTime        @default(now())\n  updatedAt     DateTime        @updatedAt\n  name          String\n  githubUrl     String\n  githubToken   String\n  deletedAt     DateTime?\n  UserToProject UserToProject[]\n  Commit        Commit[]\n}\n\nmodel UserToProject {\n  id        String   @id @default(cuid())\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  userId    String\n  projectId String\n  user      User     @relation(fields: [userId], references: [id])\n  project   Project  @relation(fields: [projectId], references: [id])\n\n  @@index([userId])\n  @@index([projectId])\n}\n\nmodel Commit {\n  id                 String   @id @default(cuid())\n  createdAt          DateTime @default(now())\n  updatedAt          DateTime @updatedAt\n  projectId          String\n  project            Project  @relation(fields: [projectId], references: [id])\n  commitMessage      String\n  commitHash         String\n  commitAuthorName   String\n  commitAuthorAvatar String\n  commitAuthorLink   String\n  commitDate         DateTime\n  summary            String\n}\n",
-  "inlineSchemaHash": "b2cd0f6a68836e538a5fa9af7eaa5ad9a06acd8e19a3d124cefc320abb5953a6",
+  "inlineSchema": "generator client {\n  provider      = \"prisma-client-js\"\n  output        = \"../app/generated/client\"\n  binaryTargets = [\"native\", \"rhel-openssl-3.0.x\"]\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id            String          @id @default(cuid())\n  name          String          @unique\n  email         String          @unique\n  password      String?\n  createdAt     DateTime        @default(now())\n  updatedAt     DateTime        @updatedAt\n  UserToProject UserToProject[]\n}\n\nmodel Project {\n  id            String          @id @default(cuid())\n  createdAt     DateTime        @default(now())\n  updatedAt     DateTime        @updatedAt\n  name          String\n  githubUrl     String\n  githubToken   String\n  deletedAt     DateTime?\n  UserToProject UserToProject[]\n  Commit        Commit[]\n}\n\nmodel UserToProject {\n  id        String   @id @default(cuid())\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  userId    String\n  projectId String\n  user      User     @relation(fields: [userId], references: [id])\n  project   Project  @relation(fields: [projectId], references: [id])\n\n  @@index([userId])\n  @@index([projectId])\n}\n\nmodel Commit {\n  id                 String   @id @default(cuid())\n  createdAt          DateTime @default(now())\n  updatedAt          DateTime @updatedAt\n  projectId          String\n  project            Project  @relation(fields: [projectId], references: [id])\n  commitMessage      String\n  commitHash         String\n  commitAuthorName   String\n  commitAuthorAvatar String\n  commitAuthorLink   String\n  commitDate         DateTime\n  summary            String\n}\n",
+  "inlineSchemaHash": "59a77056e8591111aed5808737ffac96a5107a6df5aa824dfcb862f2eb45c3e3",
   "copyEngine": true
 }
 
@@ -245,6 +250,10 @@ Object.assign(exports, Prisma)
 // file annotations for bundling tools to include these files
 path.join(__dirname, "query_engine-windows.dll.node");
 path.join(process.cwd(), "app/generated/client/query_engine-windows.dll.node")
+
+// file annotations for bundling tools to include these files
+path.join(__dirname, "libquery_engine-rhel-openssl-3.0.x.so.node");
+path.join(process.cwd(), "app/generated/client/libquery_engine-rhel-openssl-3.0.x.so.node")
 // file annotations for bundling tools to include these files
 path.join(__dirname, "schema.prisma");
 path.join(process.cwd(), "app/generated/client/schema.prisma")
