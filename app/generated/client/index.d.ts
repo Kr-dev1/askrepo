@@ -2309,6 +2309,7 @@ export namespace Prisma {
     id: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    status: string | null
     name: string | null
     githubUrl: string | null
     githubToken: string | null
@@ -2319,6 +2320,7 @@ export namespace Prisma {
     id: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    status: string | null
     name: string | null
     githubUrl: string | null
     githubToken: string | null
@@ -2329,6 +2331,7 @@ export namespace Prisma {
     id: number
     createdAt: number
     updatedAt: number
+    status: number
     name: number
     githubUrl: number
     githubToken: number
@@ -2341,6 +2344,7 @@ export namespace Prisma {
     id?: true
     createdAt?: true
     updatedAt?: true
+    status?: true
     name?: true
     githubUrl?: true
     githubToken?: true
@@ -2351,6 +2355,7 @@ export namespace Prisma {
     id?: true
     createdAt?: true
     updatedAt?: true
+    status?: true
     name?: true
     githubUrl?: true
     githubToken?: true
@@ -2361,6 +2366,7 @@ export namespace Prisma {
     id?: true
     createdAt?: true
     updatedAt?: true
+    status?: true
     name?: true
     githubUrl?: true
     githubToken?: true
@@ -2444,6 +2450,7 @@ export namespace Prisma {
     id: string
     createdAt: Date
     updatedAt: Date
+    status: string
     name: string
     githubUrl: string
     githubToken: string
@@ -2471,6 +2478,7 @@ export namespace Prisma {
     id?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    status?: boolean
     name?: boolean
     githubUrl?: boolean
     githubToken?: boolean
@@ -2484,6 +2492,7 @@ export namespace Prisma {
     id?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    status?: boolean
     name?: boolean
     githubUrl?: boolean
     githubToken?: boolean
@@ -2494,6 +2503,7 @@ export namespace Prisma {
     id?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    status?: boolean
     name?: boolean
     githubUrl?: boolean
     githubToken?: boolean
@@ -2504,13 +2514,14 @@ export namespace Prisma {
     id?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    status?: boolean
     name?: boolean
     githubUrl?: boolean
     githubToken?: boolean
     deletedAt?: boolean
   }
 
-  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "name" | "githubUrl" | "githubToken" | "deletedAt", ExtArgs["result"]["project"]>
+  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "status" | "name" | "githubUrl" | "githubToken" | "deletedAt", ExtArgs["result"]["project"]>
   export type ProjectInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     UserToProject?: boolean | Project$UserToProjectArgs<ExtArgs>
     Commit?: boolean | Project$CommitArgs<ExtArgs>
@@ -2529,6 +2540,7 @@ export namespace Prisma {
       id: string
       createdAt: Date
       updatedAt: Date
+      status: string
       name: string
       githubUrl: string
       githubToken: string
@@ -2961,6 +2973,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Project", 'String'>
     readonly createdAt: FieldRef<"Project", 'DateTime'>
     readonly updatedAt: FieldRef<"Project", 'DateTime'>
+    readonly status: FieldRef<"Project", 'String'>
     readonly name: FieldRef<"Project", 'String'>
     readonly githubUrl: FieldRef<"Project", 'String'>
     readonly githubToken: FieldRef<"Project", 'String'>
@@ -4502,6 +4515,7 @@ export namespace Prisma {
     projectId: string | null
     commitMessage: string | null
     commitHash: string | null
+    commitUrl: string | null
     commitAuthorName: string | null
     commitAuthorAvatar: string | null
     commitAuthorLink: string | null
@@ -4516,6 +4530,7 @@ export namespace Prisma {
     projectId: string | null
     commitMessage: string | null
     commitHash: string | null
+    commitUrl: string | null
     commitAuthorName: string | null
     commitAuthorAvatar: string | null
     commitAuthorLink: string | null
@@ -4530,6 +4545,7 @@ export namespace Prisma {
     projectId: number
     commitMessage: number
     commitHash: number
+    commitUrl: number
     commitAuthorName: number
     commitAuthorAvatar: number
     commitAuthorLink: number
@@ -4546,6 +4562,7 @@ export namespace Prisma {
     projectId?: true
     commitMessage?: true
     commitHash?: true
+    commitUrl?: true
     commitAuthorName?: true
     commitAuthorAvatar?: true
     commitAuthorLink?: true
@@ -4560,6 +4577,7 @@ export namespace Prisma {
     projectId?: true
     commitMessage?: true
     commitHash?: true
+    commitUrl?: true
     commitAuthorName?: true
     commitAuthorAvatar?: true
     commitAuthorLink?: true
@@ -4574,6 +4592,7 @@ export namespace Prisma {
     projectId?: true
     commitMessage?: true
     commitHash?: true
+    commitUrl?: true
     commitAuthorName?: true
     commitAuthorAvatar?: true
     commitAuthorLink?: true
@@ -4661,6 +4680,7 @@ export namespace Prisma {
     projectId: string
     commitMessage: string
     commitHash: string
+    commitUrl: string
     commitAuthorName: string
     commitAuthorAvatar: string
     commitAuthorLink: string
@@ -4692,6 +4712,7 @@ export namespace Prisma {
     projectId?: boolean
     commitMessage?: boolean
     commitHash?: boolean
+    commitUrl?: boolean
     commitAuthorName?: boolean
     commitAuthorAvatar?: boolean
     commitAuthorLink?: boolean
@@ -4707,6 +4728,7 @@ export namespace Prisma {
     projectId?: boolean
     commitMessage?: boolean
     commitHash?: boolean
+    commitUrl?: boolean
     commitAuthorName?: boolean
     commitAuthorAvatar?: boolean
     commitAuthorLink?: boolean
@@ -4722,6 +4744,7 @@ export namespace Prisma {
     projectId?: boolean
     commitMessage?: boolean
     commitHash?: boolean
+    commitUrl?: boolean
     commitAuthorName?: boolean
     commitAuthorAvatar?: boolean
     commitAuthorLink?: boolean
@@ -4737,6 +4760,7 @@ export namespace Prisma {
     projectId?: boolean
     commitMessage?: boolean
     commitHash?: boolean
+    commitUrl?: boolean
     commitAuthorName?: boolean
     commitAuthorAvatar?: boolean
     commitAuthorLink?: boolean
@@ -4744,7 +4768,7 @@ export namespace Prisma {
     summary?: boolean
   }
 
-  export type CommitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "projectId" | "commitMessage" | "commitHash" | "commitAuthorName" | "commitAuthorAvatar" | "commitAuthorLink" | "commitDate" | "summary", ExtArgs["result"]["commit"]>
+  export type CommitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "projectId" | "commitMessage" | "commitHash" | "commitUrl" | "commitAuthorName" | "commitAuthorAvatar" | "commitAuthorLink" | "commitDate" | "summary", ExtArgs["result"]["commit"]>
   export type CommitInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     project?: boolean | ProjectDefaultArgs<ExtArgs>
   }
@@ -4767,6 +4791,7 @@ export namespace Prisma {
       projectId: string
       commitMessage: string
       commitHash: string
+      commitUrl: string
       commitAuthorName: string
       commitAuthorAvatar: string
       commitAuthorLink: string
@@ -5202,6 +5227,7 @@ export namespace Prisma {
     readonly projectId: FieldRef<"Commit", 'String'>
     readonly commitMessage: FieldRef<"Commit", 'String'>
     readonly commitHash: FieldRef<"Commit", 'String'>
+    readonly commitUrl: FieldRef<"Commit", 'String'>
     readonly commitAuthorName: FieldRef<"Commit", 'String'>
     readonly commitAuthorAvatar: FieldRef<"Commit", 'String'>
     readonly commitAuthorLink: FieldRef<"Commit", 'String'>
@@ -5651,6 +5677,7 @@ export namespace Prisma {
     id: 'id',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
+    status: 'status',
     name: 'name',
     githubUrl: 'githubUrl',
     githubToken: 'githubToken',
@@ -5678,6 +5705,7 @@ export namespace Prisma {
     projectId: 'projectId',
     commitMessage: 'commitMessage',
     commitHash: 'commitHash',
+    commitUrl: 'commitUrl',
     commitAuthorName: 'commitAuthorName',
     commitAuthorAvatar: 'commitAuthorAvatar',
     commitAuthorLink: 'commitAuthorLink',
@@ -5829,6 +5857,7 @@ export namespace Prisma {
     id?: StringFilter<"Project"> | string
     createdAt?: DateTimeFilter<"Project"> | Date | string
     updatedAt?: DateTimeFilter<"Project"> | Date | string
+    status?: StringFilter<"Project"> | string
     name?: StringFilter<"Project"> | string
     githubUrl?: StringFilter<"Project"> | string
     githubToken?: StringFilter<"Project"> | string
@@ -5841,6 +5870,7 @@ export namespace Prisma {
     id?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    status?: SortOrder
     name?: SortOrder
     githubUrl?: SortOrder
     githubToken?: SortOrder
@@ -5856,6 +5886,7 @@ export namespace Prisma {
     NOT?: ProjectWhereInput | ProjectWhereInput[]
     createdAt?: DateTimeFilter<"Project"> | Date | string
     updatedAt?: DateTimeFilter<"Project"> | Date | string
+    status?: StringFilter<"Project"> | string
     name?: StringFilter<"Project"> | string
     githubUrl?: StringFilter<"Project"> | string
     githubToken?: StringFilter<"Project"> | string
@@ -5868,6 +5899,7 @@ export namespace Prisma {
     id?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    status?: SortOrder
     name?: SortOrder
     githubUrl?: SortOrder
     githubToken?: SortOrder
@@ -5884,6 +5916,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Project"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Project"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Project"> | Date | string
+    status?: StringWithAggregatesFilter<"Project"> | string
     name?: StringWithAggregatesFilter<"Project"> | string
     githubUrl?: StringWithAggregatesFilter<"Project"> | string
     githubToken?: StringWithAggregatesFilter<"Project"> | string
@@ -5958,6 +5991,7 @@ export namespace Prisma {
     projectId?: StringFilter<"Commit"> | string
     commitMessage?: StringFilter<"Commit"> | string
     commitHash?: StringFilter<"Commit"> | string
+    commitUrl?: StringFilter<"Commit"> | string
     commitAuthorName?: StringFilter<"Commit"> | string
     commitAuthorAvatar?: StringFilter<"Commit"> | string
     commitAuthorLink?: StringFilter<"Commit"> | string
@@ -5973,6 +6007,7 @@ export namespace Prisma {
     projectId?: SortOrder
     commitMessage?: SortOrder
     commitHash?: SortOrder
+    commitUrl?: SortOrder
     commitAuthorName?: SortOrder
     commitAuthorAvatar?: SortOrder
     commitAuthorLink?: SortOrder
@@ -5991,6 +6026,7 @@ export namespace Prisma {
     projectId?: StringFilter<"Commit"> | string
     commitMessage?: StringFilter<"Commit"> | string
     commitHash?: StringFilter<"Commit"> | string
+    commitUrl?: StringFilter<"Commit"> | string
     commitAuthorName?: StringFilter<"Commit"> | string
     commitAuthorAvatar?: StringFilter<"Commit"> | string
     commitAuthorLink?: StringFilter<"Commit"> | string
@@ -6006,6 +6042,7 @@ export namespace Prisma {
     projectId?: SortOrder
     commitMessage?: SortOrder
     commitHash?: SortOrder
+    commitUrl?: SortOrder
     commitAuthorName?: SortOrder
     commitAuthorAvatar?: SortOrder
     commitAuthorLink?: SortOrder
@@ -6026,6 +6063,7 @@ export namespace Prisma {
     projectId?: StringWithAggregatesFilter<"Commit"> | string
     commitMessage?: StringWithAggregatesFilter<"Commit"> | string
     commitHash?: StringWithAggregatesFilter<"Commit"> | string
+    commitUrl?: StringWithAggregatesFilter<"Commit"> | string
     commitAuthorName?: StringWithAggregatesFilter<"Commit"> | string
     commitAuthorAvatar?: StringWithAggregatesFilter<"Commit"> | string
     commitAuthorLink?: StringWithAggregatesFilter<"Commit"> | string
@@ -6104,6 +6142,7 @@ export namespace Prisma {
     id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    status?: string
     name: string
     githubUrl: string
     githubToken: string
@@ -6116,6 +6155,7 @@ export namespace Prisma {
     id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    status?: string
     name: string
     githubUrl: string
     githubToken: string
@@ -6128,6 +6168,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     githubUrl?: StringFieldUpdateOperationsInput | string
     githubToken?: StringFieldUpdateOperationsInput | string
@@ -6140,6 +6181,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     githubUrl?: StringFieldUpdateOperationsInput | string
     githubToken?: StringFieldUpdateOperationsInput | string
@@ -6152,6 +6194,7 @@ export namespace Prisma {
     id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    status?: string
     name: string
     githubUrl: string
     githubToken: string
@@ -6162,6 +6205,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     githubUrl?: StringFieldUpdateOperationsInput | string
     githubToken?: StringFieldUpdateOperationsInput | string
@@ -6172,6 +6216,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     githubUrl?: StringFieldUpdateOperationsInput | string
     githubToken?: StringFieldUpdateOperationsInput | string
@@ -6238,6 +6283,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     commitMessage: string
     commitHash: string
+    commitUrl: string
     commitAuthorName: string
     commitAuthorAvatar: string
     commitAuthorLink: string
@@ -6253,6 +6299,7 @@ export namespace Prisma {
     projectId: string
     commitMessage: string
     commitHash: string
+    commitUrl: string
     commitAuthorName: string
     commitAuthorAvatar: string
     commitAuthorLink: string
@@ -6266,6 +6313,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     commitMessage?: StringFieldUpdateOperationsInput | string
     commitHash?: StringFieldUpdateOperationsInput | string
+    commitUrl?: StringFieldUpdateOperationsInput | string
     commitAuthorName?: StringFieldUpdateOperationsInput | string
     commitAuthorAvatar?: StringFieldUpdateOperationsInput | string
     commitAuthorLink?: StringFieldUpdateOperationsInput | string
@@ -6281,6 +6329,7 @@ export namespace Prisma {
     projectId?: StringFieldUpdateOperationsInput | string
     commitMessage?: StringFieldUpdateOperationsInput | string
     commitHash?: StringFieldUpdateOperationsInput | string
+    commitUrl?: StringFieldUpdateOperationsInput | string
     commitAuthorName?: StringFieldUpdateOperationsInput | string
     commitAuthorAvatar?: StringFieldUpdateOperationsInput | string
     commitAuthorLink?: StringFieldUpdateOperationsInput | string
@@ -6295,6 +6344,7 @@ export namespace Prisma {
     projectId: string
     commitMessage: string
     commitHash: string
+    commitUrl: string
     commitAuthorName: string
     commitAuthorAvatar: string
     commitAuthorLink: string
@@ -6308,6 +6358,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     commitMessage?: StringFieldUpdateOperationsInput | string
     commitHash?: StringFieldUpdateOperationsInput | string
+    commitUrl?: StringFieldUpdateOperationsInput | string
     commitAuthorName?: StringFieldUpdateOperationsInput | string
     commitAuthorAvatar?: StringFieldUpdateOperationsInput | string
     commitAuthorLink?: StringFieldUpdateOperationsInput | string
@@ -6322,6 +6373,7 @@ export namespace Prisma {
     projectId?: StringFieldUpdateOperationsInput | string
     commitMessage?: StringFieldUpdateOperationsInput | string
     commitHash?: StringFieldUpdateOperationsInput | string
+    commitUrl?: StringFieldUpdateOperationsInput | string
     commitAuthorName?: StringFieldUpdateOperationsInput | string
     commitAuthorAvatar?: StringFieldUpdateOperationsInput | string
     commitAuthorLink?: StringFieldUpdateOperationsInput | string
@@ -6487,6 +6539,7 @@ export namespace Prisma {
     id?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    status?: SortOrder
     name?: SortOrder
     githubUrl?: SortOrder
     githubToken?: SortOrder
@@ -6497,6 +6550,7 @@ export namespace Prisma {
     id?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    status?: SortOrder
     name?: SortOrder
     githubUrl?: SortOrder
     githubToken?: SortOrder
@@ -6507,6 +6561,7 @@ export namespace Prisma {
     id?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    status?: SortOrder
     name?: SortOrder
     githubUrl?: SortOrder
     githubToken?: SortOrder
@@ -6568,6 +6623,7 @@ export namespace Prisma {
     projectId?: SortOrder
     commitMessage?: SortOrder
     commitHash?: SortOrder
+    commitUrl?: SortOrder
     commitAuthorName?: SortOrder
     commitAuthorAvatar?: SortOrder
     commitAuthorLink?: SortOrder
@@ -6582,6 +6638,7 @@ export namespace Prisma {
     projectId?: SortOrder
     commitMessage?: SortOrder
     commitHash?: SortOrder
+    commitUrl?: SortOrder
     commitAuthorName?: SortOrder
     commitAuthorAvatar?: SortOrder
     commitAuthorLink?: SortOrder
@@ -6596,6 +6653,7 @@ export namespace Prisma {
     projectId?: SortOrder
     commitMessage?: SortOrder
     commitHash?: SortOrder
+    commitUrl?: SortOrder
     commitAuthorName?: SortOrder
     commitAuthorAvatar?: SortOrder
     commitAuthorLink?: SortOrder
@@ -7002,6 +7060,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     commitMessage: string
     commitHash: string
+    commitUrl: string
     commitAuthorName: string
     commitAuthorAvatar: string
     commitAuthorLink: string
@@ -7015,6 +7074,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     commitMessage: string
     commitHash: string
+    commitUrl: string
     commitAuthorName: string
     commitAuthorAvatar: string
     commitAuthorLink: string
@@ -7074,6 +7134,7 @@ export namespace Prisma {
     projectId?: StringFilter<"Commit"> | string
     commitMessage?: StringFilter<"Commit"> | string
     commitHash?: StringFilter<"Commit"> | string
+    commitUrl?: StringFilter<"Commit"> | string
     commitAuthorName?: StringFilter<"Commit"> | string
     commitAuthorAvatar?: StringFilter<"Commit"> | string
     commitAuthorLink?: StringFilter<"Commit"> | string
@@ -7108,6 +7169,7 @@ export namespace Prisma {
     id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    status?: string
     name: string
     githubUrl: string
     githubToken: string
@@ -7119,6 +7181,7 @@ export namespace Prisma {
     id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    status?: string
     name: string
     githubUrl: string
     githubToken: string
@@ -7175,6 +7238,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     githubUrl?: StringFieldUpdateOperationsInput | string
     githubToken?: StringFieldUpdateOperationsInput | string
@@ -7186,6 +7250,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     githubUrl?: StringFieldUpdateOperationsInput | string
     githubToken?: StringFieldUpdateOperationsInput | string
@@ -7197,6 +7262,7 @@ export namespace Prisma {
     id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    status?: string
     name: string
     githubUrl: string
     githubToken: string
@@ -7208,6 +7274,7 @@ export namespace Prisma {
     id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    status?: string
     name: string
     githubUrl: string
     githubToken: string
@@ -7235,6 +7302,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     githubUrl?: StringFieldUpdateOperationsInput | string
     githubToken?: StringFieldUpdateOperationsInput | string
@@ -7246,6 +7314,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     githubUrl?: StringFieldUpdateOperationsInput | string
     githubToken?: StringFieldUpdateOperationsInput | string
@@ -7294,6 +7363,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     commitMessage: string
     commitHash: string
+    commitUrl: string
     commitAuthorName: string
     commitAuthorAvatar: string
     commitAuthorLink: string
@@ -7328,6 +7398,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     commitMessage?: StringFieldUpdateOperationsInput | string
     commitHash?: StringFieldUpdateOperationsInput | string
+    commitUrl?: StringFieldUpdateOperationsInput | string
     commitAuthorName?: StringFieldUpdateOperationsInput | string
     commitAuthorAvatar?: StringFieldUpdateOperationsInput | string
     commitAuthorLink?: StringFieldUpdateOperationsInput | string
@@ -7341,6 +7412,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     commitMessage?: StringFieldUpdateOperationsInput | string
     commitHash?: StringFieldUpdateOperationsInput | string
+    commitUrl?: StringFieldUpdateOperationsInput | string
     commitAuthorName?: StringFieldUpdateOperationsInput | string
     commitAuthorAvatar?: StringFieldUpdateOperationsInput | string
     commitAuthorLink?: StringFieldUpdateOperationsInput | string
@@ -7354,6 +7426,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     commitMessage?: StringFieldUpdateOperationsInput | string
     commitHash?: StringFieldUpdateOperationsInput | string
+    commitUrl?: StringFieldUpdateOperationsInput | string
     commitAuthorName?: StringFieldUpdateOperationsInput | string
     commitAuthorAvatar?: StringFieldUpdateOperationsInput | string
     commitAuthorLink?: StringFieldUpdateOperationsInput | string
