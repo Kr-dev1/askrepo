@@ -23,6 +23,7 @@ model Project {
   id            String          @id @default(cuid())
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
+  status        String          @default("created")
   name          String
   githubUrl     String
   githubToken   String
@@ -52,6 +53,7 @@ model Commit {
   project            Project  @relation(fields: [projectId], references: [id])
   commitMessage      String
   commitHash         String
+  commitUrl          String
   commitAuthorName   String
   commitAuthorAvatar String
   commitAuthorLink   String

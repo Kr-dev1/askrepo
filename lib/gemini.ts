@@ -32,5 +32,8 @@ export const summarizeCommitAI = async (diff: string) => {
     model: "gemini-2.0-flash",
     contents: prompt,
   });
-  return result.text;
+  console.log(result);
+
+  const summaryText = result?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+  return summaryText;
 };

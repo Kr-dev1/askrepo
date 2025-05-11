@@ -108,7 +108,7 @@ const CreatePage = () => {
                     <Input
                       id="githubToken"
                       placeholder="ghp_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-                      type="password"
+                      type="text"
                       {...field}
                     />
                   </FormControl>
