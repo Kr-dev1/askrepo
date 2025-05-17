@@ -39,6 +39,7 @@ export default function SignupForm() {
       method: "POST",
       url: "auth/signup",
       data,
+      redirectUrl: "/signin",
     });
   };
 

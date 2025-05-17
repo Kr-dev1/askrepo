@@ -16,6 +16,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { type: "text", label: "Password" },
       },
       authorize: async (credentials) => {
+        console.log(process.env.DATABASE_URL);
         let user = null;
         const identifier = credentials.identifier as string;
         const password = credentials.password as string;
@@ -66,12 +67,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async signIn({ user, account, profile }) {
       if (account?.provider === "google") {
         try {
-          const existingUser = await prisma.user.findUnique({
+          let dbUser = await prisma.user.findUnique({
             where: { email: user.email! },
           });
 
-          if (!existingUser) {
-            await prisma.user.create({
+          if (!dbUser) {
+            dbUser = await prisma.user.create({
               data: {
                 email: user.email!,
                 name: user.name || user.email!.split("@")[0],
@@ -79,7 +80,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               },
             });
           }
-          user.id = existingUser?.id as string;
+
+          user.id = dbUser.id;
           return true;
         } catch (error) {
           console.error("Error in signIn callback:", error);

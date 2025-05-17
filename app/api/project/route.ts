@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { auth } from "../auth/[...nextauth]/options";
 import { NextResponse } from "next/server";
+import { pollCommits } from "@/lib/github";
 
 export const POST = async (req: Request) => {
   try {
@@ -39,6 +40,14 @@ export const POST = async (req: Request) => {
 
       return newProject;
     });
+
+    try {
+      pollCommits(result.id).catch((error) => {
+        console.error("Failed to poll commits:", error);
+      });
+    } catch (error) {
+      console.error("Error starting commit poll:", error);
+    }
 
     return NextResponse.json(
       {
@@ -83,7 +92,6 @@ export async function GET() {
         deletedAt: null,
       },
     });
-
     return NextResponse.json({
       message: "Found project for user",
       status: 200,
