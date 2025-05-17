@@ -1,5 +1,6 @@
 "use client";
 
+import Commits from "@/components/dashboard/Commits";
 import useProject from "@/hooks/use-projects";
 import { IconBrandGithub } from "@tabler/icons-react";
 import { ExternalLink } from "lucide-react";
@@ -40,7 +41,7 @@ const Dashboard = () => {
         </div>
       </div>
       <div className="mt-8"></div>
-      Commit Log
+      <Commits />
     </div>
   );
 };

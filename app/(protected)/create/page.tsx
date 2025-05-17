@@ -28,7 +28,6 @@ const CreatePage = () => {
     },
   });
   const { isPending, submitForm } = useSubmitForm();
-
   const onSubmit = async (data: z.infer<typeof RegisterRepoSchema>) => {
     submitForm({
       method: "POST",

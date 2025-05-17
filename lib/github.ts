@@ -2,6 +2,7 @@ import { Octokit } from "octokit";
 import { prisma } from "./prisma";
 import axios from "./axios";
 import { summarizeCommitAI } from "./gemini";
+import { summarizeWithFallback } from "./llama";
 
 export const octokit = new Octokit({
   auth: process.env.GITHUB_TOKEN,
@@ -18,26 +19,20 @@ type Response = {
 };
 
 type FailedCommit = {
+  projectId?: string;
   commitHash: string;
   commitMessage: string;
   reason: string;
   diffSize?: number;
+  diff?: string;
+};
+
+export type PollCommitsResult = {
+  dbResult: any;
+  failedCommits: FailedCommit[];
 };
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
-const logGitHubRateLimit = async () => {
-  try {
-    const { data } = await octokit.rest.rateLimit.get();
-    const remaining = data.rate.remaining;
-    const reset = new Date(data.rate.reset * 1000);
-    console.log(
-      `[GitHub] Rate Limit: ${remaining} remaining — resets at ${reset.toLocaleTimeString()}`
-    );
-  } catch (err: any) {
-    console.warn("Unable to fetch GitHub rate limit:", err.message);
-  }
-};
 
 export const getCommitHashes = async (
   githubUrl: string
@@ -84,32 +79,30 @@ const summariseCommitsWithRetry = async (
         `${githubUrl}/commit/${commitHash}.diff`,
         {
           headers: { Accept: "application/vnd.github.v3.diff" },
+          responseType: "text",
         }
       );
 
-      if (!data || typeof data !== "string" || data.trim().length === 0) {
-        return {
-          summary: "No diff data available to summarize",
-          diffSize: 0,
-          success: false,
-          reason: "Empty diff data",
-        };
-      }
+      const cleanDiffForPrompt = (diff: string): string => {
+        return diff.replace(/\r\n/g, "\n").replace(/`/g, "'").trim();
+      };
 
       const diffSize = data.length;
-      const result = await summarizeCommitAI(data);
+      const cleanedDiff = cleanDiffForPrompt(data);
+      const result = await summarizeCommitAI(cleanedDiff);
 
       if (!result || result.trim().length === 0) {
         return {
           summary:
             "The AI couldn't generate a meaningful summary for this commit",
           diffSize,
+          diff: cleanedDiff,
           success: false,
           reason: "Empty AI response",
         };
       }
 
-      return { summary: result, diffSize, success: true };
+      return { summary: result, diffSize, diff: cleanedDiff, success: true };
     } catch (error: any) {
       if (error.response?.status === 429) {
         retries++;
@@ -143,17 +136,15 @@ const summariseCommitsWithRetry = async (
   };
 };
 
-export const pollCommits = async (projectId: string) => {
+export const pollCommits = async (
+  projectId: string
+): Promise<PollCommitsResult> => {
   const { project, githubUrl } = await fetchProjectGithubUrl(projectId);
   const commitHashes = await getCommitHashes(githubUrl);
   const unProcesssedCommits = await filterUnprocessedCommits(
     projectId,
     commitHashes
   );
-
-  console.log(`Processing ${unProcesssedCommits.length} unprocessed commits`);
-
-  await logGitHubRateLimit();
 
   const summaries = [];
   const failedCommits: FailedCommit[] = [];
@@ -167,22 +158,17 @@ export const pollCommits = async (projectId: string) => {
         i
       );
 
-      if (result.success) {
-        console.log(
-          `✅ Commit ${commit.commitHash.substring(
-            0,
-            7
-          )} summarized. Diff size: ${result.diffSize} bytes`
-        );
-      } else {
+      if (!result.success) {
         failedCommits.push({
+          projectId: projectId,
           commitHash: commit.commitHash,
           commitMessage: commit.commitMessage,
           reason: result.reason || "Unknown error",
           diffSize: result.diffSize,
+          diff: result.diff,
         });
         console.warn(
-          `❌ Failed: ${commit.commitHash.substring(0, 7)} — ${result.reason}`
+          `Failed: ${commit.commitHash.substring(0, 7)} — ${result.reason}`
         );
       }
 
@@ -191,7 +177,6 @@ export const pollCommits = async (projectId: string) => {
         summary: result.summary,
       });
 
-      if (i % 3 === 0) await logGitHubRateLimit();
       if (i < unProcesssedCommits.length - 1) await sleep(1000);
     } catch (error: any) {
       summaries.push({
@@ -231,33 +216,12 @@ export const pollCommits = async (projectId: string) => {
       reasonCounts[commit.reason] = (reasonCounts[commit.reason] || 0) + 1;
     });
 
-    console.log("Failure reasons:");
-    Object.entries(reasonCounts).forEach(([reason, count]) => {
-      console.log(`  - ${reason}: ${count} commits`);
-    });
-
-    const diffsWithSize = failedCommits.filter((c) => c.diffSize !== undefined);
-    if (diffsWithSize.length > 0) {
-      const avgSize =
-        diffsWithSize.reduce((sum, c) => sum + (c.diffSize || 0), 0) /
-        diffsWithSize.length;
-      console.log(
-        `Average diff size of failed commits: ${Math.round(avgSize)} bytes`
-      );
-    }
-
     console.log("Failed commit hashes:");
     failedCommits.forEach((commit) => {
-      console.log(
-        `  - ${commit.commitHash.substring(0, 7)}: \"${commit.commitMessage
-          .split("\n")[0]
-          .substring(0, 50)}${
-          commit.commitMessage.length > 50 ? "..." : ""
-        }\" (${commit.diffSize || "unknown"} bytes)`
-      );
+      summarizeWithFallback(commit.diff!, commit.commitHash, projectId!);
     });
   } else {
-    console.log("✅ All commits were successfully processed.");
+    console.log("All commits were successfully processed.");
   }
 
   return { dbResult: result, failedCommits };
@@ -286,10 +250,22 @@ const filterUnprocessedCommits = async (
   );
 };
 
-const result = await pollCommits("cmaelkclc000dt2nk6vmjr5yg");
-const { failedCommits } = result;
-if (failedCommits.length > 0) {
-  console.log(
-    `Found ${failedCommits.length} failed commits to analyze further.`
-  );
+if (require.main === module) {
+  const projectId = process.argv[2];
+  if (!projectId) {
+    console.error("Please provide a project ID as a command line argument");
+    process.exit(1);
+  }
+
+  pollCommits(projectId)
+    .then((result) => {
+      console.log(
+        `Process completed with ${result.failedCommits.length} failed commits`
+      );
+      process.exit(0);
+    })
+    .catch((err) => {
+      console.error("Error polling commits:", err);
+      process.exit(1);
+    });
 }
