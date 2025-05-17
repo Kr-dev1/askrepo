@@ -8,7 +8,7 @@ export const summarizeWithFallback = async (
 ) => {
   const llm = new Ollama({
     model: "llama3.2-vision:latest",
-    baseUrl: "https://robust-gar-intent.ngrok-free.app",
+    baseUrl: process.env.NGROK_URL,
   });
   const completion =
     await llm.invoke(`You are an expert programmer and technical writer tasked with summarizing a git diff into a clear and concise changelog.
