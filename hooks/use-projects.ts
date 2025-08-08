@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "@/lib/axios";
 import { useLocalStorage } from "usehooks-ts";
+import { useRouter } from "next/navigation";
 
 // Define TypeScript type for projects
 interface Project {
@@ -10,6 +11,8 @@ interface Project {
 }
 
 const useProject = () => {
+  const router = useRouter();
+  
   // Store selected project ID in local storage
   const [projectId, setProjectId] = useLocalStorage<string | null>(
     "askrepo-project",
@@ -25,6 +28,13 @@ const useProject = () => {
     queryKey: ["projects"],
     queryFn: async () => {
       const { data } = await axios.get("project");
+      
+      // Check if API returned redirect flag
+      if (data.redirect) {
+        router.replace(data.redirectUrl);
+        return [];
+      }
+      
       return data.data;
     },
   });

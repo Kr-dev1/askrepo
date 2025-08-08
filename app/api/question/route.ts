@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { auth } from "../auth/[...nextauth]/options";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 interface QuestionRequest {
   answer: string;
@@ -39,6 +39,7 @@ export const POST = async (req: Request) => {
           projectId,
           question,
           userId: session.user.id,
+          userImage: session.user.image,
         },
       });
     });
@@ -63,4 +64,44 @@ export const POST = async (req: Request) => {
       { status: 500 }
     );
   }
+};
+
+export const GET = async (req: NextRequest) => {
+  try {
+    const session = await auth();
+    if (!session || !session.user || !session.user.email) {
+      return NextResponse.json(
+        { message: "Unauthorized: Please log in" },
+        { status: 401 }
+      );
+    }
+
+    const searchParams = req.nextUrl.searchParams;
+    const projectId = searchParams.get("projectId");
+
+    if (!projectId) {
+      return NextResponse.json(
+        { message: "Project ID is required" },
+        { status: 400 }
+      );
+    }
+
+    const questions = await prisma.question.findMany({
+      where: {
+        projectId: projectId,
+      },
+      include: {
+        user: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return NextResponse.json({
+      succes: true,
+      status: 200,
+      questions,
+    });
+  } catch {}
 };

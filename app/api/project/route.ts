@@ -1,8 +1,9 @@
 import { prisma } from "@/lib/prisma";
 import { auth } from "../auth/[...nextauth]/options";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { pollCommits } from "@/lib/github";
 import { indexGithubRepo } from "@/lib/github-loader";
+import { redirect } from "next/navigation";
 
 export const POST = async (req: Request) => {
   try {
@@ -94,11 +95,24 @@ export async function GET() {
         deletedAt: null,
       },
     });
+    if (projects.length === 0) {
+      // For API routes, we should return a response that the client can use to redirect
+      return NextResponse.json(
+        {
+          redirect: true,
+          redirectUrl: "/create",
+          message: "No projects found",
+        },
+        { status: 200 }
+      );
+    }
     return NextResponse.json({
       message: "Found project for user",
       status: 200,
       data: projects,
     });
+
+    redirect("/create");
   } catch (error) {
     console.error("Error fetching users with projects:", error);
     return NextResponse.json(
@@ -107,3 +121,45 @@ export async function GET() {
     );
   }
 }
+
+export const PUT = async (req: NextRequest) => {
+  try {
+    const session = await auth();
+    if (!session || !session.user || !session.user.email) {
+      return NextResponse.json(
+        { message: "Unauthorized: Please log in" },
+        { status: 401 }
+      );
+    }
+
+    const searchParams = req.nextUrl.searchParams;
+    const projectId = searchParams.get("projectId");
+
+    if (!projectId) {
+      return NextResponse.json(
+        { message: "Project ID is required" },
+        { status: 400 }
+      );
+    }
+
+    const projects = await prisma.project.update({
+      where: {
+        id: projectId,
+      },
+      data: {
+        deletedAt: new Date(),
+      },
+    });
+
+    return NextResponse.json({
+      message: "Project Archived",
+      status: 200,
+    });
+  } catch (error) {
+    console.error("Error archiving project:", error);
+    return NextResponse.json(
+      { message: "Failed to archive project" },
+      { status: 500 }
+    );
+  }
+};

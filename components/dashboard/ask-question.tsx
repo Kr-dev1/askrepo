@@ -97,11 +97,14 @@ const AskQuestion = () => {
                         <div className="h-4"></div>
                         <Button type="submit" disabled={loading}>
                             {
-                                loading ? <div>
-                                    Analysing <LoaderTwo />
-                                </div>
+                                loading ?
+                                    <div className="flex items-center gap-2">
+                                        Analysing <LoaderTwo />
+                                    </div>
                                     :
-                                    "Ask repo"
+                                    <p className="px-2">
+                                        Ask repo
+                                    </p>
                             }
                         </Button>
                     </form>

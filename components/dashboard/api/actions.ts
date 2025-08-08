@@ -12,23 +12,11 @@ const google = createGoogleGenerativeAI({
 
 export async function askQuestion(question: string, projectId: string) {
   const stream = createStreamableValue();
-
-  console.log("=== DEBUG INFO ===");
-  console.log("Question:", question);
-  console.log("ProjectId:", projectId);
-
   try {
     const queryVector = await generateEmbedding(question);
     console.log("Query vector length:", queryVector.length);
 
     const vectorQuery = `[${queryVector.join(",")}]`;
-
-    // First, check if we have ANY data for this project
-    const totalCount = (await prisma.$queryRaw`
-      SELECT COUNT(*) as count FROM "SourceCodeEmbedding" WHERE "projectId" = ${projectId}
-    `) as { count: bigint }[];
-
-    console.log("Total embeddings for project:", Number(totalCount[0].count));
 
     // Try without similarity threshold first
     const result = (await prisma.$queryRaw`

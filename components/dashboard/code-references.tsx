@@ -14,12 +14,6 @@ type Props = {
 
 const FileReferences = ({ fileReferences }: Props) => {
     const [tab, setTab] = useState(fileReferences[0]?.fileName)
-
-    console.log(fileReferences);
-
-    console.log(tab);
-
-
     return (
         <div className='max-w-[70vw]'>
             <Tabs value={tab} onValueChange={setTab}>

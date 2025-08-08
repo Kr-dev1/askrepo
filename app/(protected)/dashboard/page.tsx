@@ -3,14 +3,18 @@
 import Commits from "@/components/dashboard/Commits";
 import useProject from "@/hooks/use-projects";
 import { IconBrandGithub } from "@tabler/icons-react";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, PlusCircle } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { LoaderThree } from "@/components/ui/loader";
 import AskQuestion from "@/components/dashboard/ask-question";
+import Archive from "@/components/dashboard/archive";
+import { Button } from "@/components/ui/button";
+import { useGetCommits } from "@/components/dashboard/api/api";
 
 const Dashboard = () => {
-  const { project } = useProject();
+  const { project, projectId } = useProject();
+  const { isPending } = useGetCommits(projectId!)
 
   if (project?.loading) {
     return (
@@ -23,7 +27,26 @@ const Dashboard = () => {
       </div>
     );
   }
+  console.log(isPending, project);
 
+  if (isPending && projectId === undefined) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[80vh] gap-4">
+        <div className="text-center space-y-2">
+          <h2 className="text-2xl font-semibold">No Project Found</h2>
+          <p className="text-muted-foreground">
+            Create a new project to get started
+          </p>
+        </div>
+        <Link href="/create">
+          <Button className="flex items-center gap-2">
+            <PlusCircle className="size-4" />
+            Create New Project
+          </Button>
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -33,7 +56,7 @@ const Dashboard = () => {
             <IconBrandGithub className="size-5 text-white" />
             <div className="ml-2">
               <p className="text-sm font-medium text-white flex items-center">
-                This Project is linked to {project?.githubUrl}
+                This Project is linked to
                 <Link
                   className="flex items-center ml-1"
                   href={project?.githubUrl ?? ""}
@@ -49,7 +72,8 @@ const Dashboard = () => {
         <div className="h-4"></div>
         <div className="flex items-center gap-4">
           {/* Render InviteButton and Archive Button here */}
-          Team Members InviteButton Archive Button
+          Team Members InviteButton
+          <Archive />
         </div>
       </div>
 
