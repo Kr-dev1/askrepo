@@ -50,7 +50,7 @@ export function LoaderOne() {
 export function LoaderTwo() {
   return (
     <motion.div
-      className="h-5 w-5 rounded-full border-2 border-white border-t-transparent animate-spin"
+      className="h-5 w-5 rounded-full border-2 border-neutral-500 border-t-transparent animate-spin"
       initial={{ rotate: 0 }}
       animate={{ rotate: 360 }}
       transition={{

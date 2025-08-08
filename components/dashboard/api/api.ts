@@ -1,5 +1,6 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "@/lib/axios";
+import { toast } from "sonner";
 
 const fetchCommits = async (projectId: string) => {
   let { data } = await axios.get(`/commits?projectId=${projectId}`);
@@ -39,6 +40,7 @@ export const saveQuestion = async (
 };
 
 export const useSaveQuestion = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({
       projectId,
@@ -51,5 +53,28 @@ export const useSaveQuestion = () => {
       answer: string;
       fileReferences: any;
     }) => saveQuestion(projectId, question, answer, fileReferences),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["questions"] });
+    },
+  });
+};
+
+const archiveProjects = async (projectId: string) => {
+  let { data } = await axios.put(`/project?projectId=${projectId}`);
+  return data;
+};
+
+export const useArchiveProjects = (projectId: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () => archiveProjects(projectId),
+    onSuccess: () => {
+      localStorage.removeItem("askrepo-project");
+      toast.success("Project Archived");
+      queryClient.invalidateQueries({ queryKey: ["archiveProjects"] });
+      queryClient.invalidateQueries({ queryKey: ["projects"] });
+      queryClient.invalidateQueries({ queryKey: ["commits", projectId] });
+    },
   });
 };
