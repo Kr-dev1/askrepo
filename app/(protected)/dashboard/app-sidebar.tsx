@@ -25,7 +25,7 @@ import { usePathname } from "next/navigation";
 import { useSidebar } from "@/components/ui/sidebar";
 import useProject from "@/hooks/use-projects";
 import Image from "next/image";
-import Logo from "@/app/logo.svg";
+import Logo from "@/public/logo.svg";
 
 const items = [
   {
@@ -38,16 +38,6 @@ const items = [
     url: "/qa",
     icon: Bot,
   },
-  {
-    title: "Meetings",
-    url: "/meetings",
-    icon: PresentationIcon,
-  },
-  {
-    title: "Billing",
-    url: "/billing",
-    icon: CreditCardIcon,
-  },
 ];
 
 const AppSideBar = () => {
@@ -56,7 +46,7 @@ const AppSideBar = () => {
   const { projects, isLoading, setProjectId, projectId } = useProject();
 
   return (
-    <Sidebar collapsible="icon" variant="floating">
+    <Sidebar >
       <SidebarHeader>
         <Image src={Logo} alt="Ask Repo Logo" />
       </SidebarHeader>
@@ -88,23 +78,25 @@ const AppSideBar = () => {
           <SidebarGroupContent>
             <SidebarMenu>
               {projects.map((project: any) => (
-                <SidebarMenuItem key={project.id}>
-                  <SidebarMenuButton asChild>
-                    <div onClick={() => setProjectId(project.id)}>
-                      <div
-                        className={cn(
-                          "rounded-sm border size-6 flex items-center justify-center text-sm",
-                          project.id === projectId
-                            ? "bg-blue-500 text-white"
-                            : "bg-white text-gray-700"
-                        )}
-                      >
-                        {project.name[0]}
+                <Link href="/dashboard" key={project.id}>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <div onClick={() => setProjectId(project.id)}>
+                        <div
+                          className={cn(
+                            "rounded-sm border size-6 flex items-center justify-center text-sm",
+                            project.id === projectId
+                              ? "bg-blue-500 text-white"
+                              : "bg-white text-gray-700"
+                          )}
+                        >
+                          {project.name[0]}
+                        </div>
+                        <span>{project.name}</span>
                       </div>
-                      <span>{project.name}</span>
-                    </div>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </Link>
               ))}
               <div className="h-2"></div>
               {open && (

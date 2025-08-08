@@ -16,7 +16,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { type: "text", label: "Password" },
       },
       authorize: async (credentials) => {
-        console.log(process.env.DATABASE_URL);
         let user = null;
         const identifier = credentials.identifier as string;
         const password = credentials.password as string;

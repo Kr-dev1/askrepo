@@ -12,7 +12,7 @@ interface Project {
 const useProject = () => {
   // Store selected project ID in local storage
   const [projectId, setProjectId] = useLocalStorage<string | null>(
-    "dionysus-project",
+    "askrepo-project",
     null
   );
 

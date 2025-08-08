@@ -1,6 +1,6 @@
 import {
   SidebarProvider,
-  FloatingSidebarTrigger,
+  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { auth } from "@/app/api/auth/[...nextauth]/options";
 import UserProfile from "@/components/auth/userProfile";
@@ -16,6 +16,7 @@ const SideBarLayout = async ({ children }: Props) => {
   return (
     <SidebarProvider>
       <AppSideBar />
+      <SidebarTrigger className="mt-6"/>
       <div className="w-full m-2">
         <div className="flex items-center gap-2 border-sidebar bg-sidebar border shadow rounded-md p-2 px-4">
           {/* <SearchBar/> */}
@@ -28,7 +29,6 @@ const SideBarLayout = async ({ children }: Props) => {
           {children}
         </div>
       </div>
-      <FloatingSidebarTrigger />
     </SidebarProvider>
   );
 };

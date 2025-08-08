@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "../auth/[...nextauth]/options";
 import { NextResponse } from "next/server";
 import { pollCommits } from "@/lib/github";
+import { indexGithubRepo } from "@/lib/github-loader";
 
 export const POST = async (req: Request) => {
   try {
@@ -14,7 +15,7 @@ export const POST = async (req: Request) => {
     }
 
     const body = await req.json();
-    const { githubUrl, name, githubToken } = body;
+    const { githubUrl, name, githubToken, branchName } = body;
 
     if (!githubUrl || !name) {
       return NextResponse.json(
@@ -23,12 +24,13 @@ export const POST = async (req: Request) => {
       );
     }
 
-    const result = await prisma.$transaction(async (tx) => {
+    const project = await prisma.$transaction(async (tx) => {
       const newProject = await tx.project.create({
         data: {
           name,
           githubUrl,
           githubToken,
+          branchName,
         },
       });
       await tx.userToProject.create({
@@ -40,20 +42,20 @@ export const POST = async (req: Request) => {
 
       return newProject;
     });
-
-    try {
-      pollCommits(result.id).catch((error) => {
-        console.error("Failed to poll commits:", error);
-      });
-    } catch (error) {
-      console.error("Error starting commit poll:", error);
-    }
-
+    pollCommits(project.id).catch((error) => {
+      console.error("Failed to poll commits:", error);
+    });
+    indexGithubRepo(
+      project.id,
+      project.githubUrl,
+      project.branchName,
+      project.githubToken
+    );
     return NextResponse.json(
       {
         message: "Project created successfully",
         status: 201,
-        projectId: result.id,
+        projectId: project.id,
       },
       { status: 201 }
     );

@@ -6,8 +6,24 @@ import { IconBrandGithub } from "@tabler/icons-react";
 import { ExternalLink } from "lucide-react";
 import Link from "next/link";
 import React from "react";
+import { LoaderThree } from "@/components/ui/loader";
+import AskQuestion from "@/components/dashboard/ask-question";
+
 const Dashboard = () => {
   const { project } = useProject();
+
+  if (project?.loading) {
+    return (
+      <div className="flex flex-col justify-center items-center h-full gap-4">
+        <LoaderThree />
+        <div className="text-center">
+          <p>Fetching data from your project</p>
+          <p>This page will display your project details once ready.</p>
+        </div>
+      </div>
+    );
+  }
+
 
   return (
     <div>
@@ -17,7 +33,7 @@ const Dashboard = () => {
             <IconBrandGithub className="size-5 text-white" />
             <div className="ml-2">
               <p className="text-sm font-medium text-white flex items-center">
-                This Project is linked to{" "}
+                This Project is linked to {project?.githubUrl}
                 <Link
                   className="flex items-center ml-1"
                   href={project?.githubUrl ?? ""}
@@ -32,14 +48,17 @@ const Dashboard = () => {
         </div>
         <div className="h-4"></div>
         <div className="flex items-center gap-4">
-          Team Membars InviteButton Archive Button
+          {/* Render InviteButton and Archive Button here */}
+          Team Members InviteButton Archive Button
         </div>
       </div>
+
       <div className="mt-4">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-5">
-          AskQuestions Meeting Card
+          <AskQuestion />
         </div>
       </div>
+
       <div className="mt-8"></div>
       <Commits />
     </div>

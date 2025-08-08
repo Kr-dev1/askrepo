@@ -25,6 +25,7 @@ const CreatePage = () => {
       githubUrl: "",
       name: "",
       githubToken: "",
+      branchName: "",
     },
   });
   const { isPending, submitForm } = useSubmitForm();
@@ -71,7 +72,6 @@ const CreatePage = () => {
                       placeholder="ProjectName"
                       type="text"
                       {...field}
-                      required
                     />
                   </FormControl>
                   <FormMessage />
@@ -90,7 +90,6 @@ const CreatePage = () => {
                       placeholder="https://github.com/yourname/your-repo"
                       type="text"
                       {...field}
-                      required
                     />
                   </FormControl>
                   <FormMessage />
@@ -107,6 +106,24 @@ const CreatePage = () => {
                     <Input
                       id="githubToken"
                       placeholder="ghp_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+                      type="text"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="branchName"
+              render={({ field }) => (
+                <FormItem>
+                  <Label htmlFor="branchName">Branch Name</Label>
+                  <FormControl>
+                    <Input
+                      id="githubToken"
+                      placeholder="master/main"
                       type="text"
                       {...field}
                     />
