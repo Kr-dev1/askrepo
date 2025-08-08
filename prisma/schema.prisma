@@ -1,35 +1,42 @@
 generator client {
-  provider      = "prisma-client-js"
-  output        = "../app/generated/client"
-  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+  provider        = "prisma-client-js"
+  output          = "../app/generated/client"
+  binaryTargets   = ["native", "rhel-openssl-3.0.x"]
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [vector]
 }
 
 model User {
-  id            String          @id @default(cuid())
-  name          String          @unique
-  email         String          @unique
-  password      String?
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  UserToProject UserToProject[]
+  id              String          @id @default(cuid())
+  name            String          @unique
+  email           String          @unique
+  password        String?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  UserToProject   UserToProject[]
+  quuestionsAsked Question[]
 }
 
 model Project {
-  id            String          @id @default(cuid())
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  status        String          @default("created")
-  name          String
-  githubUrl     String
-  githubToken   String
-  deletedAt     DateTime?
-  UserToProject UserToProject[]
-  Commit        Commit[]
+  id                  String                @id @default(cuid())
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  status              String                @default("created")
+  name                String
+  githubUrl           String
+  githubToken         String
+  branchName          String
+  deletedAt           DateTime?
+  UserToProject       UserToProject[]
+  Commit              Commit[]
+  sourceCodeEmbedding SourceCodeEmbedding[]
+  loading             Boolean               @default(true)
+  savedQuestions      Question[]
 }
 
 model UserToProject {
@@ -59,4 +66,27 @@ model Commit {
   commitAuthorLink   String
   commitDate         DateTime
   summary            String
+}
+
+model SourceCodeEmbedding {
+  id               String                       @id @default(cuid())
+  summaryEmbedding Unsupported("vector(3072)")?
+  sourceCode       String
+  fileName         String
+  summary          String
+  projectId        String
+  project          Project                      @relation(fields: [projectId], references: [id])
+}
+
+model Question {
+  id             String   @id @default(cuid())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  question       String
+  answer         String
+  fileReferences Json?
+  projectId      String
+  project        Project  @relation(fields: [projectId], references: [id])
+  userId         String
+  user           User     @relation(fields: [userId], references: [id])
 }

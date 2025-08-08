@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "../auth/[...nextauth]/options";
+import { pollCommits } from "@/lib/github";
 
 export const GET = async (req: NextRequest) => {
   try {
@@ -50,7 +51,9 @@ export const GET = async (req: NextRequest) => {
         commitDate: "desc",
       },
     });
-
+    pollCommits(projectId).catch((error) => {
+      console.error("Failed to poll commits:", error);
+    });
     return NextResponse.json(
       {
         success: true,

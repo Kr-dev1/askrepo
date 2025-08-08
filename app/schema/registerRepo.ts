@@ -17,4 +17,5 @@ export const RegisterRepoSchema = z.object({
     .max(100, { message: "GitHub token is too long" })
     .optional()
     .or(z.literal("")),
+  branchName: z.string().min(1, { message: "Branch name is required" }),
 });
