@@ -1,9 +1,7 @@
-export const runtime = "nodejs";
-
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
-import bcrypt from "bcryptjs";
+import { compare } from "bcrypt-ts";
 import { prisma } from "@/lib/prisma";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -34,7 +32,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             throw new Error("No user found");
           }
           user = findExisting;
-          const checkPassword = await bcrypt.compare(
+          const checkPassword = await compare(
             password,
             findExisting.password || ""
           );

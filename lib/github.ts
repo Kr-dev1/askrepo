@@ -131,5 +131,3 @@ const summariseCommits = async (githubUrl: string, commitHash: string) => {
   });
   return (await summariseCommitAI(data)) || "";
 };
-
-pollCommits("cme0q4ik10004u70op21rimlb");
