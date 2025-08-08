@@ -36,7 +36,7 @@ export default function RootLayout({
         <SpeedInsights />
         <ReactQueryWrapper>
           <Toaster position="top-center" />
-          <main>{children}</main>
+          {children}
         </ReactQueryWrapper>
       </body>
     </html>
