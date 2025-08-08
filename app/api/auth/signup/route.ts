@@ -1,4 +1,4 @@
-import bcrypt from "bcryptjs";
+import { hash } from "bcrypt-ts";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 export const POST = async (req: Request) => {
@@ -21,7 +21,7 @@ export const POST = async (req: Request) => {
         { status: 409 }
       );
     }
-    const hashedPassowrd = await bcrypt.hash(password, 8);
+    const hashedPassowrd = await hash(password, 8);
     const newUser = await prisma.user.create({
       data: {
         name,
